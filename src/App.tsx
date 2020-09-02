@@ -6,7 +6,7 @@ import Details from "./Details";
 import ThemeContext from "./ThemeContext";
 
 const App = () => {
-  const themeHook = useState({ buttonColor: "darkBlue", modalColor: "pink" });
+  const themeHook = useState("darkBlue");
   return (
     <ThemeContext.Provider value={themeHook}>
       <div>
@@ -22,4 +22,4 @@ const App = () => {
   );
 };
 
-export default App;
+render(<App />, document.getElementById("root"));

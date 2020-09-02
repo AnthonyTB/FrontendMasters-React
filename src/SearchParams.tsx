@@ -1,25 +1,31 @@
-import React, { useState, useEffect, useContext } from "react";
-import pet, { ANIMALS } from "@frontendmasters/pet";
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  FunctionComponent,
+} from "react";
+import pet, { ANIMALS, Animal } from "@frontendmasters/pet";
 import useDropdown from "./useDropdown";
 import Results from "./Results";
 import ThemeContext from "./ThemeContext";
+import { RouteComponentProps } from "@reach/router";
 
-const SearchParams = () => {
-  const [Location, setlocation] = useState("Seattle, WA");
-  const [breeds, setBreeds] = useState([]);
+const SearchParams: FunctionComponent<RouteComponentProps> = () => {
+  const [location, setlocation] = useState("Seattle, WA");
+  const [breeds, setBreeds] = useState([] as string[]);
   const [animal, AnimalDropdown] = useDropdown("Animal", "dog", ANIMALS);
   const [breed, BreedDropdown, setBreed] = useDropdown("Breed", "", breeds);
-  const [pets, setPets] = useState([]);
+  const [pets, setPets] = useState([] as Animal[]);
   const [theme, setTheme] = useContext(ThemeContext);
 
-  const requestPets = async () => {
-    const { animals } = await pet.animals({
-      location,
-      breed,
-      type: animal,
-    });
-
-    setPets(animals || []);
+  const requestPets = () => {
+    pet
+      .animals({
+        location,
+        breed,
+        type: animal,
+      })
+      .then(({ animals }) => setPets(animals || []));
   };
 
   useEffect(() => {
@@ -45,7 +51,7 @@ const SearchParams = () => {
           <input
             type="text"
             id="location"
-            value={Location}
+            value={location}
             onChange={(ev) => setlocation(ev.target.value)}
             placeholder="Location"
           />
